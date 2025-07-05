@@ -13,6 +13,7 @@ import MovieCardSkeleton from "./SkeletonLoading";
 import { fetcher, formatRating } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import BookmarkButton from "./BookmarkButton";
 
 // Movie Card
 const MovieCard = ({ movie }: { movie: Country }) => {
@@ -46,8 +47,16 @@ const MovieCard = ({ movie }: { movie: Country }) => {
             <Play className="w-12 h-12" />
           </div>
         )}
+        <div className="absolute top-1 left-0 flex gap-4 justify-between z-20">
+          <BookmarkButton
+            title={movie.title}
+            url={`/watch${slug}`}
+            thumbnail={movie.thumbnail}
+            rating={movie.rating}
+            releaseDate={movie.releaseDate}
+          />
+        </div>
       </div>
-
       <CardHeader>
         <CardTitle className="text-lg font-bold line-clamp-2 group-hover:text-blue-600 transition-colors">
           {movie.title}

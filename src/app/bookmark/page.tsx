@@ -6,12 +6,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import BookmarkButton from "@/components/BookmarkButton";
 import { formatRating } from "@/lib/utils";
 import Image from "next/image";
+import { Trash2 } from "lucide-react";
 
 export default function BookmarksPage() {
-  const { bookmarks, clearBookmarks } = useBookmarkStore();
+  const { bookmarks, clearBookmarks, removeBookmark } = useBookmarkStore();
 
   return (
     <div className="container mx-auto py-6 px-4 max-w-6xl min-h-screen">
@@ -47,13 +47,9 @@ export default function BookmarksPage() {
 
                 {/* Bookmark button (pojok kiri atas) */}
                 <div className="absolute top-1 left-4 z-20">
-                  <BookmarkButton
-                    title={movie.title}
-                    url={`/watch${movie.url}`}
-                    thumbnail={movie.thumbnail}
-                    rating={movie.rating}
-                    releaseDate={movie.releaseDate}
-                  />
+                  <Button size="icon" variant="destructive" onClick={() => removeBookmark(movie.url)}>
+                    <Trash2 />
+                  </Button>
                 </div>
               </div>
 

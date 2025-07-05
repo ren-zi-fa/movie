@@ -7,6 +7,7 @@ interface BookmarkState {
   toggleBookmark: (item: Bookmark) => void;
   isBookmarked: (url: string) => boolean;
   clearBookmarks: () => void;
+  removeBookmark: (url: string) => void;
 }
 
 export const useBookmarkStore = create<BookmarkState>()(
@@ -21,6 +22,12 @@ export const useBookmarkStore = create<BookmarkState>()(
           : [...current, item];
         set({ bookmarks: updated });
       },
+      removeBookmark: (url) => {
+        const current = get().bookmarks;
+        const updated = current.filter((b) => b.url !== url);
+        set({ bookmarks: updated });
+      },
+
       isBookmarked: (url) => get().bookmarks.some((b) => b.url === url),
       clearBookmarks: () => set({ bookmarks: [] }),
     }),
