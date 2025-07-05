@@ -29,11 +29,10 @@ export default function RootLayout({
 }>) {
   return (
     <html suppressHydrationWarning>
-      <header>
+      <head>
         {/* Google Analytics - gunakan lazyOnload untuk menghindari hydration issues */}
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
-        
         />
         <Script id="ga4-init" strategy="lazyOnload">
           {`
@@ -43,14 +42,17 @@ export default function RootLayout({
             gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
           `}
         </Script>
-      </header>
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ThemeProvider attribute="class">
-          <Navbar />
-          <SecondNavbar />
-          {children}
+          <div className="fixed top-0 left-0 right-0 z-30">
+            <Navbar />
+            <SecondNavbar />
+          </div>
+
+          <main className="pt-[130px]">{children}</main>
           <Footer />
         </ThemeProvider>
       </body>

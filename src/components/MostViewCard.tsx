@@ -14,7 +14,6 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle, Play, Eye } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-// Types
 interface MostView {
   title: string;
   url: string;
@@ -37,7 +36,7 @@ const fetcher = (url: string): Promise<ApiResponse<MostView[]>> =>
     return res.json();
   });
 
-const OptimizedImage = ({
+const ImageDisplay = ({
   src,
   alt,
   title,
@@ -50,10 +49,10 @@ const OptimizedImage = ({
   const [imageError, setImageError] = React.useState(false);
 
   return (
-    <div className="relative aspect-[4/3] w-full overflow-hidden bg-gray-100 rounded-t-lg">
+    <div className="relative w-full overflow-hidden bg-gray-100">
       {!imageLoaded && !imageError && (
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="animate-pulse bg-gray-200 w-full h-full rounded-t-lg" />
+          <div className="animate-pulse bg-gray-200 w-full h-full" />
         </div>
       )}
 
@@ -66,7 +65,7 @@ const OptimizedImage = ({
         <img
           src={src}
           alt={alt}
-          className={`w-full h-full object-cover transition-all duration-300 ${
+          className={`w-auto mx-auto h-auto transition-all duration-300 ${
             imageLoaded ? "opacity-100 scale-100" : "opacity-0 scale-105"
           }`}
           loading="lazy"
@@ -96,7 +95,7 @@ const MostViewCard = ({ item }: { item: MostView }) => {
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 cursor-pointer group h-full">
       <div onClick={handleClick}>
-        <OptimizedImage
+        <ImageDisplay
           src={item.thumbnail}
           alt={item.title}
           title={item.title}
@@ -223,12 +222,10 @@ const CardMostView = () => {
               ))}
         </CarouselContent>
 
-        {/* Panah kiri dan kanan yang menempel di tengah sisi card */}
         <CarouselPrevious className="absolute top-1/2 left-0 -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-black rounded-full shadow p-1" />
         <CarouselNext className="absolute top-1/2 right-0 -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-black rounded-full shadow p-1" />
       </Carousel>
 
-      {/* Scroll hint untuk mobile */}
       <div className="md:hidden mt-2 text-center">
         <div className="inline-flex items-center gap-1 text-xs text-muted-foreground">
           <span>Scroll to see more</span>

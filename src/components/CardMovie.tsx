@@ -42,8 +42,8 @@ const EmptyState = () => (
 );
 
 export default function CardMovie() {
-  const [visibleCount, setVisibleCount] = useState(12); // Mulai dengan 12 item
-  const ITEMS_PER_PAGE = 12; // Jumlah item yang dimuat setiap kali
+  const [visibleCount, setVisibleCount] = useState(10); 
+  const ITEMS_PER_PAGE = 10;
 
   const { data, isLoading, error, mutate } = useSWR<ApiResponse<Movie[]>>(
     "/api/home",
@@ -110,13 +110,13 @@ export default function CardMovie() {
 
       {/* Movies Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-8">
-        {visibleMovies.map((movie,index) => (
+        {visibleMovies.map((movie, index) => (
           <SingleCard
             key={`${movie.url}-${index}-${movie.title
               .replace(/\s+/g, "-")
               .toLowerCase()}`}
             movie={movie}
-            style={{}} // Tidak perlu style untuk grid biasa
+         
           />
         ))}
       </div>

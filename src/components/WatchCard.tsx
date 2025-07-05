@@ -23,7 +23,6 @@ import { ApiResponse, WatchMovie } from "@/types";
 import { fetcher } from "@/lib/utils";
 import { WatchMovieSkeleton } from "./SkeletonWatch";
 import Image from "next/image";
-import CardMostView from "./MostViewCard";
 import BookmarkButton from "@/components/BookmarkButton";
 
 interface WatchMovieProps {
@@ -296,7 +295,6 @@ const WatchMovieCard: React.FC<WatchMovieProps> = ({ slug }) => {
           </div>
         </div>
       </div>
-      <CardMostView />
     </>
   );
 };

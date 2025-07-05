@@ -3,12 +3,11 @@
 import React from "react";
 import { useBookmarkStore } from "@/store/useBookmarkStore";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import Image from "next/image";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import BookmarkButton from "@/components/BookmarkButton";
-import { Star } from "lucide-react";
+import { formatRating } from "@/lib/utils";
 
 export default function BookmarksPage() {
   const { bookmarks, clearBookmarks } = useBookmarkStore();
@@ -31,43 +30,61 @@ export default function BookmarksPage() {
           Belum ada bookmark disimpan.
         </p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 ">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {bookmarks.map((movie) => (
             <Card key={movie.url} className="flex flex-col overflow-hidden">
-              <div className="relative w-full aspect-[3/2]">
-                <Image
+              {/* Thumbnail */}
+              <div className="relative w-auto">
+                <img
                   src={movie.thumbnail}
                   alt={movie.title}
-                  fill
-                  className="object-cover"
-                  unoptimized
+                  className="object-cover w-auto h-auto mx-auto"
                   referrerPolicy="no-referrer"
                 />
-                <div className="absolute top-2 right-2 z-10">
-                  <BookmarkButton {...movie} />
+
+                {/* Bookmark button (pojok kiri atas) */}
+                <div className="absolute top-1 left-4 z-20">
+                  <BookmarkButton
+                    title={movie.title}
+                    url={`/watch${movie.url}`}
+                    thumbnail={movie.thumbnail}
+                    rating={movie.rating}
+                    releaseDate={movie.releaseDate}
+                  />
                 </div>
-                {movie.rating && (
-                  <div className="absolute bottom-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded-full flex items-center gap-1">
-                    <Star className="w-3 h-3" />
-                    {movie.rating}
-                  </div>
-                )}
               </div>
+
+              {/* Header: Judul dan Rating */}
               <CardHeader>
                 <CardTitle className="text-base line-clamp-2">
                   {movie.title}
                 </CardTitle>
+
+                {movie.rating && (
+                  <div className="flex items-center gap-1 text-sm text-yellow-600 mt-1">
+                    <span className="text-yellow-500">⭐</span>
+                    <span>{formatRating(movie.rating)}</span>
+                  </div>
+                )}
               </CardHeader>
+
+              {/* Konten: Genre, Tanggal, Tombol */}
               <CardContent className="flex flex-col gap-2">
-                <p className="text-sm text-muted-foreground">
-                {movie.releaseDate &&
-                  new Date(movie.releaseDate).toLocaleDateString("id-ID", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })
-                }
-                </p>
+                {movie.genres && movie.genres.length > 0 && (
+                  <p className="text-sm text-gray-600">
+                    {movie.genres.join(", ")}
+                  </p>
+                )}
+
+                {movie.releaseDate && (
+                  <p className="text-sm text-muted-foreground">
+                    {new Date(movie.releaseDate).toLocaleDateString("id-ID", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </p>
+                )}
 
                 <Link
                   href={movie.url}

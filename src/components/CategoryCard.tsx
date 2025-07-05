@@ -10,17 +10,13 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
   Play,
   ExternalLink,
-  Calendar,
-  User,
   Star,
   AlertCircle,
 } from "lucide-react";
 import { ApiResponse, Country } from "@/types";
 import MovieCardSkeleton from "./SkeletonLoading";
-import { fetcher } from "@/lib/utils";
-import Image from "next/image";
+import { fetcher, formatRating } from "@/lib/utils";
 import { useRouter } from "next/navigation";
-import BookmarkButton from "./BookmarkButton";
 
 // Movie Card
 const MovieCard = ({ movie }: { movie: Country }) => {
@@ -38,52 +34,38 @@ const MovieCard = ({ movie }: { movie: Country }) => {
   };
 
   return (
-    <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300 group">
-      <div className="relative aspect-video bg-gray-100 overflow-hidden">
+    <Card className="hover:shadow-lg transition-shadow duration-300 group px-0">
+      <div className="relative overflow-hidden px-0 mx-auto">
         {movie.thumbnail ? (
-          <Image
-            width={300}
-            height={300}
+          <img
             referrerPolicy="no-referrer"
             src={movie.thumbnail}
             alt={movie.title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-            loading="lazy"
+            className="h-auto w-auto max-w-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-gray-200 text-gray-500">
             <Play className="w-12 h-12" />
           </div>
         )}
-
-        {/* Bookmark button */}
-        <div className="absolute top-2 left-2 z-10">
-          <BookmarkButton
-            title={movie.title}
-            url={`/watch${slug}`}
-            thumbnail={movie.thumbnail}
-            rating={movie.rating}
-            releaseDate={movie.releaseDate}
-            genres={movie.genres}
-          />
-        </div>
-
-        {/* Rating badge */}
-        {movie.rating && (
-          <div className="absolute top-2 right-2 bg-black/70 text-white px-2 py-1 rounded-md text-sm font-medium flex items-center gap-1">
-            <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-            {movie.rating}
-          </div>
-        )}
       </div>
 
-      <CardHeader className="p-4">
+      <CardHeader>
         <CardTitle className="text-lg font-bold line-clamp-2 group-hover:text-blue-600 transition-colors">
           {movie.title}
         </CardTitle>
 
+        {/* Rating di dalam header */}
+        {movie.rating && (
+          <div className="flex items-center gap-1 text-sm text-yellow-500 mt-1">
+            <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+            <span>{formatRating(movie.rating)}</span>
+          </div>
+        )}
+
+        {/* Genre */}
         {movie.genres && movie.genres.length > 0 && (
-          <div className="flex flex-wrap gap-1 mb-3">
+          <div className="flex flex-wrap gap-1 mb-3 mt-2">
             {movie.genres.slice(0, 3).map((genre, index) => (
               <Badge key={index} variant="secondary" className="text-xs">
                 {genre}
@@ -97,27 +79,7 @@ const MovieCard = ({ movie }: { movie: Country }) => {
           </div>
         )}
 
-        <div className="space-y-2 text-sm text-gray-600">
-          {movie.director && (
-            <div className="flex items-center gap-2">
-              <User className="w-4 h-4" />
-              <span className="truncate">{movie.director}</span>
-            </div>
-          )}
-
-          {movie.releaseDate && (
-            <div className="flex items-center gap-2">
-              <Calendar className="w-4 h-4" />
-              <span>
-                {new Date(movie.releaseDate).toLocaleDateString("id-ID", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
-              </span>
-            </div>
-          )}
-        </div>
+        {/* Director, Release Date, etc */}
       </CardHeader>
 
       <CardContent className="p-4 pt-0">
