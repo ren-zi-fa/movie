@@ -13,6 +13,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle, Play, Eye } from "lucide-react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 interface MostView {
   title: string;
@@ -62,7 +63,9 @@ const ImageDisplay = ({
           <span className="text-xs text-center px-2">{title}</span>
         </div>
       ) : (
-        <img
+        <Image
+          width={100}
+          height={100}
           src={src}
           alt={alt}
           className={`w-auto mx-auto h-auto transition-all duration-300 ${

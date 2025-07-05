@@ -7,16 +7,12 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import {
-  Play,
-  ExternalLink,
-  Star,
-  AlertCircle,
-} from "lucide-react";
+import { Play, ExternalLink, Star, AlertCircle } from "lucide-react";
 import { ApiResponse, Country } from "@/types";
 import MovieCardSkeleton from "./SkeletonLoading";
 import { fetcher, formatRating } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 // Movie Card
 const MovieCard = ({ movie }: { movie: Country }) => {
@@ -37,7 +33,9 @@ const MovieCard = ({ movie }: { movie: Country }) => {
     <Card className="hover:shadow-lg transition-shadow duration-300 group px-0">
       <div className="relative overflow-hidden px-0 mx-auto">
         {movie.thumbnail ? (
-          <img
+          <Image
+            width={100}
+            height={100}
             referrerPolicy="no-referrer"
             src={movie.thumbnail}
             alt={movie.title}

@@ -6,6 +6,7 @@ import { Movie } from "@/types";
 import BookmarkButton from "./BookmarkButton";
 import { Calendar, FilmIcon } from "lucide-react";
 import { formatRating } from "@/lib/utils";
+import Image from "next/image";
 
 const situs = process.env.NEXT_PUBLIC_TARGET_URL as string;
 
@@ -25,8 +26,6 @@ export const SingleCard = ({ movie }: { movie: Movie }) => {
     }
   };
 
-
-
   const slugWatch = movie.watchLink.replace(situs, "");
   const slug = movie.url.replace(situs, "");
 
@@ -37,7 +36,9 @@ export const SingleCard = ({ movie }: { movie: Movie }) => {
           {imageLoading && (
             <Skeleton className="w-full h-[200px] absolute inset-0 z-10" />
           )}
-          <img
+          <Image
+            width={100}
+            height={100}
             src={imageError ? "/placeholder-movie.jpg" : movie.thumbnail}
             alt={movie.title}
             referrerPolicy="no-referrer"
@@ -85,7 +86,7 @@ export const SingleCard = ({ movie }: { movie: Movie }) => {
               </div>
               <div className="flex items-center gap-1">
                 <span className="text-green-600">
-                  <Calendar size={15}/>
+                  <Calendar size={15} />
                 </span>
                 <span>{formatDate(movie.releaseDate)}</span>
               </div>

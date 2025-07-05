@@ -8,6 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import BookmarkButton from "@/components/BookmarkButton";
 import { formatRating } from "@/lib/utils";
+import Image from "next/image";
 
 export default function BookmarksPage() {
   const { bookmarks, clearBookmarks } = useBookmarkStore();
@@ -35,7 +36,9 @@ export default function BookmarksPage() {
             <Card key={movie.url} className="flex flex-col overflow-hidden">
               {/* Thumbnail */}
               <div className="relative w-auto">
-                <img
+                <Image
+                  width={100}
+                  height={100}
                   src={movie.thumbnail}
                   alt={movie.title}
                   className="object-cover w-auto h-auto mx-auto"
