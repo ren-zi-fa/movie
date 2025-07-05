@@ -3,8 +3,7 @@
 import { fetcher } from "@/lib/utils";
 import { ApiResponse, Movie } from "@/types";
 import useSWR from "swr";
-import { FixedSizeGrid as Grid } from "react-window";
-import AutoSizer from "react-virtualized-auto-sizer";
+import { useState } from "react";
 import MovieCardSkeleton from "./SkeletonLoading";
 import { SingleCard } from "./SingleCard";
 
@@ -43,6 +42,9 @@ const EmptyState = () => (
 );
 
 export default function CardMovie() {
+  const [visibleCount, setVisibleCount] = useState(12); // Mulai dengan 12 item
+  const ITEMS_PER_PAGE = 12; // Jumlah item yang dimuat setiap kali
+
   const { data, isLoading, error, mutate } = useSWR<ApiResponse<Movie[]>>(
     "/api/home",
     fetcher,
@@ -54,43 +56,12 @@ export default function CardMovie() {
     }
   );
 
-  // Calculate responsive grid dimensions
-  const calculateGridConfig = (width: number) => {
-    let columnCount = 5;
-    let cardWidth = 280;
-    const cardHeight = 380; // Increased height for better content fit
-
-    if (width < 640) {
-      // Mobile
-      columnCount = 1;
-      cardWidth = width - 32; // Account for padding
-    } else if (width < 768) {
-      // Tablet portrait
-      columnCount = 2;
-      cardWidth = (width - 48) / 2; // Account for gaps
-    } else if (width < 1024) {
-      // Tablet landscape
-      columnCount = 3;
-      cardWidth = (width - 64) / 3;
-    } else if (width < 1280) {
-      // Desktop small
-      columnCount = 4;
-      cardWidth = (width - 80) / 4;
-    } else {
-      // Desktop large
-      columnCount = 5;
-      cardWidth = (width - 96) / 5;
-    }
-
-    return { columnCount, cardWidth, cardHeight };
-  };
-
   // Handle loading state
   if (isLoading || !data) {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-          {Array.from({ length: 10 }).map((_, index) => (
+          {Array.from({ length: 12 }).map((_, index) => (
             <MovieCardSkeleton key={index} />
           ))}
         </div>
@@ -118,6 +89,14 @@ export default function CardMovie() {
     );
   }
 
+  // Get movies to display (berdasarkan visibleCount)
+  const visibleMovies = movies.slice(0, visibleCount);
+  const hasMore = visibleCount < movies.length;
+
+  const handleLoadMore = () => {
+    setVisibleCount((prev) => Math.min(prev + ITEMS_PER_PAGE, movies.length));
+  };
+
   return (
     <div className="min-h-screen container mx-auto px-4 py-8">
       <div className="mb-6">
@@ -125,43 +104,43 @@ export default function CardMovie() {
           Koleksi Film
         </h1>
         <p className="text-gray-600 dark:text-gray-400">
-          Ditemukan {movies.length} film
+          Menampilkan {visibleMovies.length} dari {movies.length} film
         </p>
       </div>
 
-      <div className="h-[calc(100vh-200px)]">
-        <AutoSizer>
-          {({ height, width }) => {
-            const { columnCount, cardWidth, cardHeight } =
-              calculateGridConfig(width);
-            const rowCount = Math.ceil(movies.length / columnCount);
-
-            return (
-              <Grid
-                columnCount={columnCount}
-                columnWidth={cardWidth}
-                height={height}
-                rowCount={rowCount}
-                rowHeight={cardHeight}
-                width={width}
-                style={{
-                  overflowX: "hidden",
-                }}
-              >
-                {({ columnIndex, rowIndex, style }) => {
-                  const index = rowIndex * columnCount + columnIndex;
-                  if (index >= movies.length) return null;
-
-                  const movie = movies[index];
-                  return (
-                    <SingleCard key={movie.url} movie={movie} style={style} />
-                  );
-                }}
-              </Grid>
-            );
-          }}
-        </AutoSizer>
+      {/* Movies Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-8">
+        {visibleMovies.map((movie,index) => (
+          <SingleCard
+            key={`${movie.url}-${index}-${movie.title
+              .replace(/\s+/g, "-")
+              .toLowerCase()}`}
+            movie={movie}
+            style={{}} // Tidak perlu style untuk grid biasa
+          />
+        ))}
       </div>
+
+      {/* Load More Button */}
+      {hasMore && (
+        <div className="flex justify-center">
+          <button
+            onClick={handleLoadMore}
+            className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg"
+          >
+            Muat Lebih Banyak ({movies.length - visibleCount} film tersisa)
+          </button>
+        </div>
+      )}
+
+      {/* End message when all items are loaded */}
+      {!hasMore && movies.length > ITEMS_PER_PAGE && (
+        <div className="text-center py-8">
+          <p className="text-gray-500 dark:text-gray-400">
+            Semua film telah dimuat
+          </p>
+        </div>
+      )}
     </div>
   );
 }

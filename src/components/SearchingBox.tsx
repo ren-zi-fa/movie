@@ -89,7 +89,7 @@ export default function SearchBox() {
               return (
                 <Link
                   key={movie.url}
-                  href={`/watch/${slug}`}
+                  href={`/watch${slug}`}
                   className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800"
                 >
                   <Image
