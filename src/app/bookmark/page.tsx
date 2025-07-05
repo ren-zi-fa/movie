@@ -60,8 +60,15 @@ export default function BookmarksPage() {
               </CardHeader>
               <CardContent className="flex flex-col gap-2">
                 <p className="text-sm text-muted-foreground">
-                  {movie.releaseDate}
+                {movie.releaseDate &&
+                  new Date(movie.releaseDate).toLocaleDateString("id-ID", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })
+                }
                 </p>
+
                 <Link
                   href={movie.url}
                   className="mt-auto w-full bg-blue-600 hover:bg-blue-700 text-white text-sm text-center py-2 px-3 rounded-md transition"
