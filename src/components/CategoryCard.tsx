@@ -20,6 +20,7 @@ import MovieCardSkeleton from "./SkeletonLoading";
 import { fetcher } from "@/lib/utils";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import BookmarkButton from "./BookmarkButton";
 
 // Movie Card
 const MovieCard = ({ movie }: { movie: Country }) => {
@@ -55,6 +56,19 @@ const MovieCard = ({ movie }: { movie: Country }) => {
           </div>
         )}
 
+        {/* Bookmark button */}
+        <div className="absolute top-2 left-2 z-10">
+          <BookmarkButton
+            title={movie.title}
+            url={`/watch${slug}`}
+            thumbnail={movie.thumbnail}
+            rating={movie.rating}
+            releaseDate={movie.releaseDate}
+            genres={movie.genres}
+          />
+        </div>
+
+        {/* Rating badge */}
         {movie.rating && (
           <div className="absolute top-2 right-2 bg-black/70 text-white px-2 py-1 rounded-md text-sm font-medium flex items-center gap-1">
             <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
@@ -94,7 +108,13 @@ const MovieCard = ({ movie }: { movie: Country }) => {
           {movie.releaseDate && (
             <div className="flex items-center gap-2">
               <Calendar className="w-4 h-4" />
-              <span>{movie.releaseDate}</span>
+              <span>
+                {new Date(movie.releaseDate).toLocaleDateString("id-ID", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </span>
             </div>
           )}
         </div>
@@ -201,7 +221,7 @@ const CardCategory: React.FC<CardCategoryProps> = ({ country }) => {
   return (
     <div className="container mx-auto px-4 py-6">
       <div className="mb-6">
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2 dark:text-white">
           Movies from {country}
         </h1>
         <p className="text-gray-600">

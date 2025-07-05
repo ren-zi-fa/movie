@@ -74,7 +74,7 @@ export default function SearchBox() {
       />
 
       {isFocused && query && (
-        <div className="absolute z-10 w-full bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 mt-2 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+        <div className="absolute z-50 w-full bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 mt-2 rounded-lg shadow-lg max-h-60 overflow-y-auto">
           {isLoading ? (
             <div className="p-4 text-center text-sm text-gray-500">
               Loading...

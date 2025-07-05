@@ -14,7 +14,7 @@ export default function BookmarksPage() {
   const { bookmarks, clearBookmarks } = useBookmarkStore();
 
   return (
-    <div className="container mx-auto py-6 px-4 max-w-6xl">
+    <div className="container mx-auto py-6 px-4 max-w-6xl min-h-screen">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Daftar Bookmark</h1>
         {bookmarks.length > 0 && (
@@ -31,7 +31,7 @@ export default function BookmarksPage() {
           Belum ada bookmark disimpan.
         </p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 ">
           {bookmarks.map((movie) => (
             <Card key={movie.url} className="flex flex-col overflow-hidden">
               <div className="relative w-full aspect-[3/2]">
