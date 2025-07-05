@@ -59,3 +59,25 @@ export interface SearchMovie {
   country: string;
   duration: string;
 }
+
+export interface Country {
+  title: string;
+  url: string;
+  trailer: string;
+  genres: string[];
+  thumbnail: string;
+  watchLink: string;
+  rating: string;
+  releaseDate: string;
+  director: string;
+}
+
+export interface Bookmark {
+  title: string;
+  url: string;
+  thumbnail: string;
+  rating?: string;
+  releaseDate?: string;
+  genres?: string[];
+  country?: string;
+}

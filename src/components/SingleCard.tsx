@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { Skeleton } from "./ui/skeleton";
 import { Movie } from "@/types";
+import BookmarkButton from "./BookmarkButton";
 
 const situs = process.env.NEXT_PUBLIC_TARGET_URL as string;
 
@@ -12,7 +13,7 @@ export const SingleCard = ({
   style,
 }: {
   movie: Movie;
-  style?: React.CSSProperties; // Made optional since we don't need it for regular grid
+  style?: React.CSSProperties;
 }) => {
   const [imageError, setImageError] = useState(false);
   const [imageLoading, setImageLoading] = useState(true);
@@ -34,13 +35,12 @@ export const SingleCard = ({
     return isNaN(numRating) ? rating : numRating.toFixed(1);
   };
 
-  const urlWatch = movie.watchLink;
-  const slugWatch = urlWatch.replace(situs, "");
+  const slugWatch = movie.watchLink.replace(situs, "");
+  const slug = movie.url.replace(situs, "");
 
   return (
     <div style={style} className="w-full">
       <Card className="h-full rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 flex flex-col group overflow-hidden">
-        {/* Image Container */}
         <div className="relative overflow-hidden rounded-t-2xl">
           {imageLoading && (
             <Skeleton className="w-full h-[200px] absolute inset-0 z-10" />
@@ -50,7 +50,6 @@ export const SingleCard = ({
             alt={movie.title}
             width={300}
             height={200}
-            unoptimized
             referrerPolicy="no-referrer"
             className={`rounded-t-2xl object-cover w-full h-[200px] transition-transform duration-300 group-hover:scale-105 ${
               imageLoading ? "opacity-0" : "opacity-100"
@@ -61,13 +60,20 @@ export const SingleCard = ({
               setImageLoading(false);
             }}
           />
-          {/* Rating Badge */}
-          <div className="absolute top-2 right-2 bg-black/70 text-white px-2 py-1 rounded-full text-xs font-semibold backdrop-blur-sm">
-            ⭐ {formatRating(movie.rating)}
+          <div className="absolute top-2 right-2 flex gap-1 z-20">
+            <BookmarkButton
+              title={movie.title}
+              url={`/watch${slug}`}
+              thumbnail={movie.thumbnail}
+              rating={movie.rating}
+              releaseDate={movie.releaseDate}
+            />
+            <div className=" text-white px-2 py-1">
+              ⭐ {formatRating(movie.rating)}
+            </div>
           </div>
         </div>
 
-        {/* Content */}
         <CardContent className="p-4 flex-1 flex flex-col justify-between">
           <div className="space-y-2">
             <Link
@@ -83,7 +89,6 @@ export const SingleCard = ({
                 <span className="text-blue-600">🎬</span>
                 <span className="truncate">{movie.director}</span>
               </div>
-
               <div className="flex items-center gap-1">
                 <span className="text-green-600">📅</span>
                 <span>{formatDate(movie.releaseDate)}</span>

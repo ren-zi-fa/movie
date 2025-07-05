@@ -4,6 +4,7 @@ import home from "./home";
 import mostView from "./most-view";
 import watchroute from "./watch";
 import searchRoute from "./search";
+import countryRoute from "./country";
 
 const app = new Hono().basePath("/api");
 
@@ -13,7 +14,8 @@ export const routes = app
   .route("/home", home)
   .route("/most-view", mostView)
   .route("/watch", watchroute)
-  .route("/search", searchRoute);
+  .route("/search", searchRoute)
+  .route("/category", countryRoute);
 
 export const GET = handle(app);
 export const POST = handle(app);
