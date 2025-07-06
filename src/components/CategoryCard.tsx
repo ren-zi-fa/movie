@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import useSWR from "swr";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -23,6 +23,7 @@ const MovieCard = ({ movie }: { movie: Country }) => {
   const handleWatchClick = () => {
     router.push(`/watch${slug}`);
   };
+  const [imageError, setImageError] = useState(false);
 
   const handleTrailerClick = () => {
     if (movie.trailer) {
@@ -38,9 +39,10 @@ const MovieCard = ({ movie }: { movie: Country }) => {
             width={100}
             height={100}
             referrerPolicy="no-referrer"
-            src={movie.thumbnail}
-            alt={movie.title}
+            src={!movie.thumbnail || imageError ? "/blur.png" : movie.thumbnail}
+            alt={movie.title || "Thumbnail tidak tersedia"}
             className="h-auto w-auto max-w-full object-cover group-hover:scale-105 transition-transform duration-300"
+            onError={() => setImageError(true)}
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-gray-200 text-gray-500">

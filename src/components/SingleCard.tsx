@@ -39,8 +39,8 @@ export const SingleCard = ({ movie }: { movie: Movie }) => {
           <Image
             width={100}
             height={100}
-            src={imageError ? "/placeholder-movie.jpg" : movie.thumbnail}
-            alt={movie.title}
+            src={!movie.thumbnail || imageError ? "/blur.png" : movie.thumbnail}
+            alt={movie.title || "Thumbnail tidak tersedia"}
             referrerPolicy="no-referrer"
             className={`rounded-t-2xl object-cover w-auto h-[200px] mx-auto transition-transform duration-300 group-hover:scale-105 ${
               imageLoading ? "opacity-0" : "opacity-100"
@@ -51,6 +51,7 @@ export const SingleCard = ({ movie }: { movie: Movie }) => {
               setImageLoading(false);
             }}
           />
+
           <div className="absolute top-1 right-2 flex gap-4 justify-between z-20">
             <div className=" dark:text-white text-gray-600  px-2 py-1">
               ⭐ {formatRating(movie.rating)}
