@@ -28,7 +28,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <head>
         {/* Google Analytics - gunakan lazyOnload untuk menghindari hydration issues */}
         <Script
