@@ -97,10 +97,17 @@ export default function SearchBox() {
                     height={100}
                     unoptimized
                     referrerPolicy="no-referrer"
-                    src={movie.thumbnail}
+                    src={movie.thumbnail || "/blur.png"}
                     alt={movie.title}
                     className="w-10 h-14 object-cover rounded mr-3"
+                    onError={(e) => {
+                      const target = e.currentTarget;
+                      if (target.src !== location.origin + "/blur.png") {
+                        target.src = "/blur.png";
+                      }
+                    }}
                   />
+
                   <div>
                     <div className="font-medium text-sm">{movie.title}</div>
                     <div className="text-xs text-gray-500">
