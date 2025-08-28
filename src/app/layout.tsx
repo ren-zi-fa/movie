@@ -31,6 +31,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         {/* Google Analytics - gunakan lazyOnload untuk menghindari hydration issues */}
+                <meta name="google-site-verification" content="dEZvLlndNL1OhSWrO512KFXi1Tqx_2HU4kvI5LReMEg" />
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
         />

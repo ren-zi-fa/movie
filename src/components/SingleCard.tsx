@@ -28,7 +28,8 @@ export const SingleCard = ({ movie }: { movie: Movie }) => {
 
   const slugWatch = movie.watchLink.replace(situs, "");
   const slug = movie.url.replace(situs, "");
-
+console.log(slugWatch)
+console.log(slug)
   return (
     <div className="w-full">
       <Card className="h-full px-0  rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 flex flex-col group overflow-hidden">
